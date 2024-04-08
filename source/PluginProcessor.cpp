@@ -11,6 +11,7 @@ PluginProcessor::PluginProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        )
+, apvts(*this, nullptr, "PARAMETERS", createParameterLayout())
 {
 }
 
@@ -176,6 +177,21 @@ void PluginProcessor::setStateInformation (const void* data, int sizeInBytes)
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
     juce::ignoreUnused (data, sizeInBytes);
+}
+
+PluginProcessor::APVTS::ParameterLayout PluginProcessor::createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
+    for (int i = 0; i < 5; ++i)
+    {
+        const auto id = juce::String("param") + juce::String(i);
+        const auto paramId = juce::ParameterID(id, 1);
+        const auto displayName = juce::String("Parameter ") + juce::String(i) + juce::String(" On");
+        layout.add(std::make_unique<juce::AudioParameterBool>(paramId, displayName, false));
+    }
+
+    return layout;
 }
 
 //==============================================================================

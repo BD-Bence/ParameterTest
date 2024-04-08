@@ -39,5 +39,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    using APVTS = juce::AudioProcessorValueTreeState;
+    APVTS apvts;
+    static APVTS::ParameterLayout createParameterLayout();
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginProcessor)
 };
